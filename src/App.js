@@ -1,23 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './index.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [input, setInput] = useState('');
+
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = () => {
+    const newTask = {
+      id: Date.now(),
+      text: input
+    };
+    setTasks([...tasks, newTask]);
+    setInput('');
+  };
+
+  const deleteTask = (id) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
+  }
+
+  return(
+    <div className="app-container">
+      <h1>My To-Do List</h1>
+
+      <input 
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      placeholder="Type a task..."
+      />
+      <button onClick={addTask}>Add</button>
+
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id}>{task.text}
+
+          <button onClick={() => deleteTask(task.id)} style={{marginLeft: '10px', color: 'red'}}>
+            X
+          </button>
+          
+          </li>
+        ))}
+      </ul>
+
     </div>
   );
 }
